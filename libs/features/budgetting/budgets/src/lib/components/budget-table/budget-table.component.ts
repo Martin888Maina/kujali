@@ -1,4 +1,4 @@
-import { Component, EventEmitter, input, output, ViewChild, effect, signal } from '@angular/core';
+import { Component, EventEmitter, input, output, ViewChild, effect, signal, ChangeDetectionStrategy } from '@angular/core';
 
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 
@@ -22,6 +22,7 @@ import { ChildBudgetsModalComponent } from '../../modals/child-budgets-modal/chi
   selector: 'app-budget-table',
   templateUrl: './budget-table.component.html',
   styleUrls: ['./budget-table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 /**
  * Budget Table Component
@@ -36,7 +37,6 @@ export class BudgetTableComponent {
   });
   
   canPromote = input<boolean>(false);
-
 
   doPromote = output<void>();
 
@@ -53,7 +53,6 @@ export class BudgetTableComponent {
     private _router$$: Router,
     private _dialog: MatDialog,
   ) {
-
     effect(() => {
       const data = this.budgets();
       this.overviewBudgets.set(data.overview);
@@ -103,7 +102,6 @@ export class BudgetTableComponent {
       data: parent != null ? parent : false
     });
   }
-
 
   openCloneBudgetDialog(parent: Budget | false): void {
     this._dialog.open(CreateBudgetModalComponent, {

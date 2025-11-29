@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 
 import { toSignal } from '@angular/core/rxjs-interop';
 
@@ -21,8 +21,8 @@ import { CreateBudgetModalComponent } from '../../components/create-budget-modal
   templateUrl: './select-budget.component.html',
   styleUrls: ['./select-budget.component.scss', 
               '../../components/budget-view-styles.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-
 export class SelectBudgetPageComponent
 {
   
@@ -114,15 +114,12 @@ export class SelectBudgetPageComponent
   setActive(record: BudgetRecord) {
     const toSave = ___cloneDeep(record.budget);
     
-
     delete (toSave as any).canBeActivated;
     delete (toSave as any).access;
     
-
     toSave.status = BudgetStatus.InUse;
     (record as any).updating = true;
     
-
     this._budgets$$.update(toSave).subscribe(() => {
       (record as any).updating = false;
       this._logger.log(() => `Updated Budget with id ${toSave.id}. Set as an active budget for this org.`);
